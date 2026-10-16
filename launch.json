@@ -1,0 +1,24 @@
+{
+  "kind": "custom_token",
+  "token": {
+    "contract": "BloxToken",
+    "name": "BloxIMD",
+    "symbol": "BLOX",
+    "decimals": 18,
+    "constructorArgs": [],
+    "totalSupply": "1000000000000000000000000000"
+  },
+  "contracts": [],
+  "pool": {
+    "pairedCurrency": "0xd34a99bc0f67ae1bbd63c660e6d0b0dd03e263b7",
+    "fee": 12500,
+    "tickSpacing": 60,
+    "initialPrice": "79228162514264337593543950336"
+  },
+  "economics": {
+    "poolBps": 8000,
+    "initialMarketCapWei": "7500000000000000000000",
+    "remainderTo": "0xff3e8d9ba776662ca6ed1420ee366afb436d2684"
+  },
+  "notes": "BloxToken (src/BloxToken.sol) is the BloxIMD (BLOX) ERC-20: a fixed supply of 1,000,000,000 BLOX with 18 decimals (1000000000000000000000000000 minor units) minted once in its argument-less constructor to msg.sender, the launch factory, which pays the whole supply out. There is no owner, minter, pause, blacklist, freeze, upgrade, burn or fee: every transfer moves exactly the amount it names, so the factory's transfer to the MerkleDistributor, contributor claims, the pool seed and swaps through the Uniswap v4 PoolManager arrive whole without an exemption list. Nothing can mint after deployment. No application contracts accompany the token and no initialization calls are needed. The pool pairs with IMD (0xd34a99bc0f67ae1bbd63c660e6d0b0dd03e263b7) on Ethereum at the launch policy's 1.25% fee with tick spacing 60; initialPrice is provenance only, the deployer derives the opening price from economics.initialMarketCapWei (7,500 IMD for the whole supply) and totalSupply. economics is the requester's: 80% of the supply seeds the pool and the remainder of the requester's share goes to 0xff3e8d9ba776662ca6ed1420ee366afb436d2684."
+}
