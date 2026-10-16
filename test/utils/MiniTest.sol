@@ -4,12 +4,23 @@ pragma solidity 0.8.26;
 /// @notice The few Foundry cheatcodes these tests use, declared here so the project needs no
 /// vendored test library.
 interface Vm {
+    struct Log {
+        bytes32[] topics;
+        bytes data;
+        address emitter;
+    }
+
     function prank(address sender) external;
     function startPrank(address sender) external;
     function stopPrank() external;
     function expectRevert(bytes calldata revertData) external;
+    function expectRevert() external;
     function expectEmit(bool checkTopic1, bool checkTopic2, bool checkTopic3, bool checkData) external;
     function assume(bool condition) external pure;
+    function deal(address account, uint256 newBalance) external;
+    function recordLogs() external;
+    function getRecordedLogs() external returns (Log[] memory logs);
+    function label(address account, string calldata newLabel) external;
 }
 
 /// @notice Minimal assertion helpers: a failed assertion reverts, which fails the test.
@@ -29,6 +40,22 @@ abstract contract MiniTest {
 
     function assertTrue(bool condition, string memory reason) internal pure {
         if (!condition) revert AssertionFailed(reason);
+    }
+
+    function assertEq(address left, address right, string memory reason) internal pure {
+        if (left != right) revert AssertionEqFailed(reason, uint256(uint160(left)), uint256(uint160(right)));
+    }
+
+    function assertEq(bytes32 left, bytes32 right, string memory reason) internal pure {
+        if (left != right) revert AssertionEqFailed(reason, uint256(left), uint256(right));
+    }
+
+    function assertEq(bytes memory left, bytes memory right, string memory reason) internal pure {
+        if (keccak256(left) != keccak256(right)) revert AssertionFailed(reason);
+    }
+
+    function assertLe(uint256 left, uint256 right, string memory reason) internal pure {
+        if (left > right) revert AssertionEqFailed(reason, left, right);
     }
 
     function bound(uint256 x, uint256 min, uint256 max) internal pure returns (uint256) {
